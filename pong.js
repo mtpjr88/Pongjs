@@ -1,3 +1,4 @@
+const canvas = document.getElementById('pong');
 
 class Vect{
     constructor(x = 0, y = 0){
@@ -12,6 +13,24 @@ class Rect{
         this.size = new Vect(w, h);
     }
 
+    // sides of rectangle
+    // 'get' adds a function property on the Rect object that will run when looked up
+
+    get left(){
+       return this.position.x - this.size.x / 2;
+    }
+    
+    get right(){
+       return this.position.x + this.size.x / 2;
+    }
+    
+    get top(){
+       return this.position.y - this.size.y / 2;
+    }
+    
+    get bottom(){
+       return this.position.y + this.size.y / 2;
+    }
 }
 
 class Ball extends Rect{
@@ -21,45 +40,62 @@ class Ball extends Rect{
     }
 }
 
-const ball = new Ball;
-ball.position.x = 100;
-ball.position.y = 50;
+class Pong{
+    constructor(canvas){
+        this._canvas = canvas;
+        this._ctx = canvas.getContext('2d');
 
-ball.velocity.x = 100;
-ball.velocity.y = 100;
+        //speed and posittion of ball
+        this.ball = new Ball;
+        this.ball.position.x = 100;
+        this.ball.position.y = 50;
+        
+        this.ball.velocity.x = 200;
+        this.ball.velocity.y = 200;
 
-// Animation Frame
-let lastTime;
-function callback(milliseconds) {
-    if(lastTime){
-     update((milliseconds - lastTime) / 1000);
- }
-    lastTime = milliseconds;
-    requestAnimationFrame(callback);
+        // Animation Frame
+            let lastTime;
+            const callback = (milliseconds) => {
+                 if(lastTime){
+                    this.update((milliseconds - lastTime) / 1000);
+                 }
+                lastTime = milliseconds;
+                requestAnimationFrame(callback);
+            }
+            callback();
+    }
+        
+
+    // ball movement
+    update(timeDifference) {
+        this.ball.position.x += this.ball.velocity.x * timeDifference;
+        this.ball.position.y += this.ball.velocity.y * timeDifference;
+
+        if(this.ball.left < 0 || this.ball.right > this._canvas.width) {
+            this.ball.velocity.x = -this.ball.velocity.x;
+        }
+        if(this.ball.top < 0 || this.ball.bottom > this._canvas.height) {
+            this.ball.velocity.y = -this.ball.velocity.y;
+        }
+
+        //background
+        this._ctx.fillStyle = '#000';
+        this._ctx.fillRect(0,0, this._canvas.width, this._canvas.height);
+
+        // Ball
+        this._ctx.fillStyle = '#fff';
+        this._ctx.fillRect(this.ball.position.x, this.ball.position.y, this.ball.size.x, this.ball.size.y);
+    }
 }
 
-// ball movement
-function update(timeDifference) {
-    ball.position.x += ball.velocity.x * timeDifference;
-    ball.position.y += ball.velocity.y * timeDifference;
 
-    if(ball.position.x < 0 || ball.position.x > canvas.width) {
-        ball.velocity.x = -ball.velocity.x;
-    }
-    if(ball.position.y < 0 || ball.position.y > canvas.height) {
-        ball.velocity.y = -ball.velocity.y;
-    }
+const pong = new Pong(canvas);
 
-    //background
-    ctx.fillStyle = '#000';
-    ctx.fillRect(0,0, canvas.width, canvas.height);
 
-    // Ball
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(ball.position.x, ball.position.y, ball.size.x, ball.size.y);
-}
 
-const canvas = document.getElementById('pong');
-const ctx = canvas.getContext('2d');
 
-callback();
+
+
+
+
+

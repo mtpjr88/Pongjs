@@ -85,6 +85,14 @@ class Pong{
          callback();
     }
 
+    // Where the ball meets the paddle
+    collide(player, ball) {
+        if(player.left < ball.right && player.right > ball.left &&
+        player.top < ball.bottom && player.bottom > ball.top){
+            ball.velocity.x = -ball.velocity.x;
+        }
+    }
+
     draw() {
         //background
         this._ctx.fillStyle = '#000'; //color
@@ -115,6 +123,8 @@ class Pong{
 
         // make the oponent follow the ball
         this.players[1].position.y = this.ball.position.y;
+
+        this.players.forEach(player => this.collide(player, this.ball));
 
         this.draw();
     }

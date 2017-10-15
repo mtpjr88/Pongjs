@@ -1,6 +1,8 @@
 const canvas = document.getElementById('pong');
 
 
+
+
 class Vect{
     constructor(x = 0, y = 0){
         this.x = x;
@@ -57,35 +59,45 @@ class Pong{
         this.ball.velocity.y = 200;
 
         //Players
-        // this.players = [
-        //     new Player,
-        //     new Player
-        // ]
-
+        this.players = [
+            new Player,
+            new Player
+        ]
+        // player positions
+        this.players[0].position.x = 40; //left side
+        this.players[1].position.x = this._canvas.width -40; //right side
+       
+        //center the player
+        this.players.forEach(player => {
+            // divide the height in two, thus centering the positions
+            player.position.y = this._canvas.height / 2; 
+        });
 
         // Animation Frame
-            let lastTime;
-            const callback = (milliseconds) => {
-                 if(lastTime){
-                    this.update((milliseconds - lastTime) / 1000);
-                 }
-                lastTime = milliseconds;
-                requestAnimationFrame(callback);
-            }
-            callback();
+       let lastTime;
+      const callback = (milliseconds) => {
+         if(lastTime){
+             this.update((milliseconds - lastTime) / 1000);
+           }
+          lastTime = milliseconds;
+         requestAnimationFrame(callback);
+      }
+         callback();
     }
+
     draw() {
         //background
         this._ctx.fillStyle = '#000'; //color
         this._ctx.fillRect(0,0, this._canvas.width, this._canvas.height); 
 
         this.drawRect(this.ball);
+        this.players.forEach(player => this.drawRect(player));
     }
 
     drawRect(rect) {
         // Ball
         this._ctx.fillStyle = '#fff';
-        this._ctx.fillRect(rect.position.x, rect.position.y, rect.size.x, rect.size.y);
+        this._ctx.fillRect(rect.left, rect.top, rect.size.x, rect.size.y);
     }
         
 
@@ -101,18 +113,38 @@ class Pong{
             this.ball.velocity.y = -this.ball.velocity.y;
         }
 
+        // make the oponent follow the ball
+        this.players[1].position.y = this.ball.position.y;
+
         this.draw();
     }
 }
 
+// **NOTE**
+// The super keyword is used to call functions on an object's parent.
 
+class Player extends Rect {
+    constructor(){
+        // this is calling the width and height on the Rect constructor
+        super(20, 100); 
+ 
+        this.score = 0;
+    } 
+ }
 
 const pong = new Pong(canvas);
 
+//responds to the postion of mouse clicks
+window.addEventListener('mousemove', event => {
+    pong.players[0].position.y = event.offsetY;
+});
 
+// I want it to respond to the arrow buttons
+window.addEventListener('keydown', event => {
+    pong.players[0].position.y = event.keyCode;
+    
 
-
-
+});
 
 
 

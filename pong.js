@@ -136,10 +136,11 @@ const pong = new Pong(canvas);
 
 //responds to the postion of mouse clicks
 window.addEventListener('mousemove', event => {
-    pong.players[0].position.y = event.offsetY;
+    pong.players[0].position.y = event.offsetY; // up and down
+    pong.players[0].position.x = event.offsetX;// left and right
 });
 
-// I want it to respond to the arrow buttons
+
 window.addEventListener('keydown', event => {
     pong.players[0].position.y = event.keyCode;
     

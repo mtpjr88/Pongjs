@@ -1,5 +1,6 @@
 const canvas = document.getElementById('pong');
 
+
 class Vect{
     constructor(x = 0, y = 0){
         this.x = x;
@@ -33,6 +34,8 @@ class Rect{
     }
 }
 
+
+
 class Ball extends Rect{
     constructor() {
         super(10, 10);
@@ -53,6 +56,13 @@ class Pong{
         this.ball.velocity.x = 200;
         this.ball.velocity.y = 200;
 
+        //Players
+        // this.players = [
+        //     new Player,
+        //     new Player
+        // ]
+
+
         // Animation Frame
             let lastTime;
             const callback = (milliseconds) => {
@@ -63,6 +73,19 @@ class Pong{
                 requestAnimationFrame(callback);
             }
             callback();
+    }
+    draw() {
+        //background
+        this._ctx.fillStyle = '#000'; //color
+        this._ctx.fillRect(0,0, this._canvas.width, this._canvas.height); 
+
+        this.drawRect(this.ball);
+    }
+
+    drawRect(rect) {
+        // Ball
+        this._ctx.fillStyle = '#fff';
+        this._ctx.fillRect(rect.position.x, rect.position.y, rect.size.x, rect.size.y);
     }
         
 
@@ -78,15 +101,10 @@ class Pong{
             this.ball.velocity.y = -this.ball.velocity.y;
         }
 
-        //background
-        this._ctx.fillStyle = '#000';
-        this._ctx.fillRect(0,0, this._canvas.width, this._canvas.height);
-
-        // Ball
-        this._ctx.fillStyle = '#fff';
-        this._ctx.fillRect(this.ball.position.x, this.ball.position.y, this.ball.size.x, this.ball.size.y);
+        this.draw();
     }
 }
+
 
 
 const pong = new Pong(canvas);

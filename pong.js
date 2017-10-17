@@ -74,7 +74,7 @@ class Pong{
         });
 
         // Animation Frame
-       let lastTime;
+    let lastTime;
       const callback = (milliseconds) => {
          if(lastTime){
              this.update((milliseconds - lastTime) / 1000);
@@ -147,7 +147,7 @@ const pong = new Pong(canvas);
 //responds to the postion of mouse clicks
 window.addEventListener('mousemove', event => {
     pong.players[0].position.y = event.offsetY; // up and down
-    pong.players[0].position.x = event.offsetX;// left and right
+   // pong.players[0].position.x = event.offsetX;// left and right
 });
 
 

@@ -1,6 +1,5 @@
 const canvas = document.getElementById('pong');
-
-
+ 
 
 
 class Vect{
@@ -106,6 +105,7 @@ class Pong{
         // Ball
         this._ctx.fillStyle = '#fff';
         this._ctx.fillRect(rect.left, rect.top, rect.size.x, rect.size.y);
+        
     }
         
 
